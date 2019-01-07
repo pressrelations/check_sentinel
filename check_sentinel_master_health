@@ -150,32 +150,32 @@ begin
   slave_status    = "#{num_healthy_slaves}/#{num_slaves} slaves healthy"
   sentinel_status = "#{num_healthy_sentinels}/#{num_sentinels} sentinels healthy"
 
-  if !options[:min_slaves_crit].nil? && num_slaves <= options[:min_slaves_crit]
-    add_state(:critical, "#{num_slaves} known slaves, expected at least #{options[:min_slaves_crit] + 1}")
-  elsif !options[:min_slaves_warn].nil? && num_slaves <= options[:min_slaves_warn]
-    add_state(:warning, "#{num_slaves} known slaves, expected at least #{options[:min_slaves_warn] + 1}")
+  if !options[:min_slaves_crit].nil? && num_slaves < options[:min_slaves_crit]
+    add_state(:critical, "#{num_slaves} known slaves, expected at least #{options[:min_slaves_crit]}")
+  elsif !options[:min_slaves_warn].nil? && num_slaves < options[:min_slaves_warn]
+    add_state(:warning, "#{num_slaves} known slaves, expected at least #{options[:min_slaves_warn]}")
   else
     add_info(slave_status)
   end
 
-  if !options[:min_slaves_crit].nil? && num_healthy_slaves <= options[:min_slaves_crit]
-    add_state(:critical, "Expected at least #{options[:min_slaves_crit] + 1} healthy slaves")
-  elsif !options[:min_slaves_warn].nil? && num_healthy_slaves <= options[:min_slaves_warn]
-    add_state(:warning, "Expected at least #{options[:min_slaves_warn] + 1} healthy slaves")
+  if !options[:min_slaves_crit].nil? && num_healthy_slaves < options[:min_slaves_crit]
+    add_state(:critical, "Expected at least #{options[:min_slaves_crit]} healthy slaves")
+  elsif !options[:min_slaves_warn].nil? && num_healthy_slaves < options[:min_slaves_warn]
+    add_state(:warning, "Expected at least #{options[:min_slaves_warn]} healthy slaves")
   end
 
-  if !options[:min_sentinels_crit].nil? && num_sentinels <= options[:min_sentinels_crit]
-    add_state(:critical, "#{num_sentinels} known sentinels, expected at least #{options[:min_sentinels_crit] + 1}")
-  elsif !options[:min_sentinels_warn].nil? && num_sentinels <= options[:min_sentinels_warn]
-    add_state(:warning, "#{num_sentinels} known sentinels, expected at least #{options[:min_sentinels_warn] + 1}")
+  if !options[:min_sentinels_crit].nil? && num_sentinels < options[:min_sentinels_crit]
+    add_state(:critical, "#{num_sentinels} known sentinels, expected at least #{options[:min_sentinels_crit]}")
+  elsif !options[:min_sentinels_warn].nil? && num_sentinels < options[:min_sentinels_warn]
+    add_state(:warning, "#{num_sentinels} known sentinels, expected at least #{options[:min_sentinels_warn]}")
   else
     add_info(sentinel_status)
   end
 
-  if !options[:min_sentinels_crit].nil? && num_healthy_sentinels <= options[:min_sentinels_crit]
-    add_state(:critical, "Expected at least #{options[:min_sentinels_crit] + 1} healthy sentinels")
-  elsif !options[:min_sentinels_warn].nil? && num_healthy_sentinels <= options[:min_sentinels_warn]
-    add_state(:warning, "Expected at least #{options[:min_sentinels_warn] + 1} healthy sentinels")
+  if !options[:min_sentinels_crit].nil? && num_healthy_sentinels < options[:min_sentinels_crit]
+    add_state(:critical, "Expected at least #{options[:min_sentinels_crit]} healthy sentinels")
+  elsif !options[:min_sentinels_warn].nil? && num_healthy_sentinels < options[:min_sentinels_warn]
+    add_state(:warning, "Expected at least #{options[:min_sentinels_warn]} healthy sentinels")
   end
 
   if quorum == 0
