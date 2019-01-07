@@ -35,7 +35,8 @@ options = {
   host: '127.0.0.1',
   port: 26_379,
   master: nil,
-  timeout: 2
+  timeout: 2,
+  password: nil
 }
 
 $results     = []
@@ -68,6 +69,10 @@ optparse = OptionParser.new do |opts|
   opts.on('-m', '--master MASTER', 'Perform Sentinel health checks against this master') do |m|
     options[:master] = m
   end
+
+  opts.on('-a', '--auth PASSWORD', 'Use password when running checks against discovered master server') do |p|
+    options[:password] = p
+  end
 end
 optparse.parse!
 
@@ -93,7 +98,12 @@ rescue Redis::BaseError => e
 end
 
 begin
-  master = Redis.new(host: master_addr, port: master_port)
+  opts = {
+    host: master_addr,
+    port: master_port
+  }
+  opts[:password] = options[:password] if options[:password]
+  master = Redis.new(opts)
   node_info = master.info
 rescue
   add_state(:critical, "Master #{options[:master]} unreachable at #{master_addr}:#{master_port}", true)
